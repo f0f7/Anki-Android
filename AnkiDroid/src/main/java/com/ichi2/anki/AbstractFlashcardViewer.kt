@@ -687,11 +687,29 @@ abstract class AbstractFlashcardViewer :
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        return if (processCardFunction { cardWebView: WebView? -> processHardwareButtonScroll(keyCode, cardWebView) }) {
-            true
-        } else {
-            super.onKeyDown(keyCode, event)
-        }
+        if (processCardFunction { cardWebView: WebView? -> processHardwareButtonScroll(keyCode, cardWebView) }) {
+            return true
+        } 
+        // fix
+                if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                    loadUrlInViewer("javascript:KEYCODE_DPAD_RIGHT();");
+                    return true;
+                }
+                if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+                    loadUrlInViewer("javascript:KEYCODE_DPAD_UP();");
+                    return true;
+                }
+                if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+                    loadUrlInViewer("javascript:KEYCODE_DPAD_LEFT();");
+                    return true;
+                }
+                if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+                    loadUrlInViewer("javascript:KEYCODE_DPAD_DOWN();");
+                    return true;
+                }
+        // fix
+            return super.onKeyDown(keyCode, event)
+        
     }
 
     public override val currentCardId: CardId? get() = currentCard?.id
